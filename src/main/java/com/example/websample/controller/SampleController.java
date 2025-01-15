@@ -9,8 +9,13 @@ import org.springframework.web.bind.annotation.*;
 public class SampleController {
 
     @GetMapping(value = "/order/{orderId}")
-    public String getOrder(@PathVariable("orderId") String id) {
+    public String getOrder(@PathVariable("orderId") String id)
+            throws IllegalAccessException {
         log.info("Get some order : " + id);
+
+        if ("500".equals(id)) {
+            throw new IllegalAccessException("500 is not valid orderId.");
+        }
         return "orderId:" + id + "," + "orderAmount: 1000";
     }
 
@@ -25,7 +30,7 @@ public class SampleController {
             @RequestParam(value = "orderId", required = false,
                     defaultValue = "defaultId") String id,
             @RequestParam("orderAmount") Integer amount) {
-        log.info("Get some order : " + id + ", amount : " + amount);
+        log.info("Get order : " + id + ", amount : " + amount);
         return "orderId:" + id + "," + "orderAmount:" + amount;
     }
 
